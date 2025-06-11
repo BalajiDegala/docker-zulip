@@ -35,7 +35,7 @@ RUN git clone "$ZULIP_GIT_URL" && \
 
 WORKDIR /home/zulip/zulip
 
-COPY ./zulip/zproject/prod_settings_template.py ./zproject/
+COPY ./custom_zulip_files/prod_settings_template.py ./zproject/
 
 ARG CUSTOM_CA_CERTIFICATES
 
