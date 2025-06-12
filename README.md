@@ -341,6 +341,10 @@ instructions.
 A Kubernetes pod file is in the `kubernetes/` folder; you can run it
 with `kubectl create -f ./kubernetes/`.
 
+Secret values in the manifest must be base64-encoded.  For example,
+the `auth-ldap-bind-password` entry in `zulip-secrets` should contain
+the base64 representation of your LDAP bind password.
+
 You should read the `docker-compose` section above to understand how
 this works, since it's a very similar setup. You'll want to clone
 this repository, edit the `zulip-rc.yml` to configure the image, etc.
