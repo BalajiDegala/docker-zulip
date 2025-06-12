@@ -21,26 +21,19 @@ FROM base AS build
 
 RUN echo 'zulip ALL=(ALL:ALL) NOPASSWD:ALL' >> /etc/sudoers
 
+
 USER zulip
 WORKDIR /home/zulip
 
-# You can specify these in docker-compose.yml or with
-#   docker build --build-arg "ZULIP_GIT_REF=git_branch_name" .
-ARG ZULIP_GIT_URL=https://github.com/BalajiDegala/zulip.git
-ARG ZULIP_GIT_REF=1.0.0
-
-RUN git clone "$ZULIP_GIT_URL" && \
-    cd zulip && \
-    git checkout -b current "$ZULIP_GIT_REF"
+COPY ./zulip /home/zulip/zulip
+RUN sudo chown -R zulip:zulip /home/zulip/zulip
 
 WORKDIR /home/zulip/zulip
 
 COPY ./custom_zulip_files/prod_settings_template.py ./zproject/
 
-ARG CUSTOM_CA_CERTIFICATES
 
-# Finally, we provision the development environment and build a release tarball
-RUN SKIP_VENV_SHELL_WARNING=1 ./tools/provision --build-release-tarball-only && \
+RUN SKIP_VENV_SHELL_WARNING=1 ZULIP_SKIP_RELEASE_TARBALL_CHECK=1 ./tools/provision --build-release-tarball-only && \
     uv run --no-sync ./tools/build-release-tarball docker && \
     mv /tmp/tmp.*/zulip-server-docker.tar.gz /tmp/zulip-server-docker.tar.gz
 
