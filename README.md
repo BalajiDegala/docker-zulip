@@ -103,7 +103,8 @@ you'll want to edit the `docker-compose.yml` file in this project):
 ```
 git clone https://github.com/zulip/docker-zulip.git
 cd docker-zulip
-# Edit `docker-compose.yml` to configure; see docs below
+cp .env.example .env
+# Edit `.env` and `docker-compose.yml` to configure; see docs below
 ```
 
 If you're in hurry to try Zulip, you can skip to [start the Zulip
@@ -115,7 +116,9 @@ generate secrets and do some configuration.
 With `docker-compose`, it is traditional to configure a service by
 setting environment variables declared in the `zulip -> environment`
 section of the `docker-compose.yml` file; this image follows that
-convention.
+convention.  Docker Compose will also read variables from a `.env`
+file at startup, so you can copy the provided `.env.example` to `.env`
+and edit it instead of modifying `docker-compose.yml` directly.
 
 **Mandatory settings**. You must configure these settings (more
 discussion in the main [Zulip installation docs][install-normal]):
